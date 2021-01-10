@@ -1,3 +1,5 @@
+//Comando que apaga a mensagem que o usuario introduz e subtitui o que ele fala para como se fosse o bot falando
+
 const Discord = require('discord.js');
 
 module.exports.run = async (client, message, args) => {

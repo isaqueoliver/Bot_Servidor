@@ -1,3 +1,6 @@
+//Comando que pega o que o usuario falou e transforma numa especie de votação, onde o usuario que falou é citado como autor e o que ele escreveu vira uma descrição
+//E assim o servidor pode votar na sugestão dele
+
 const Discord = require("discord.js");
 
 exports.run = async (client, message, args) => {
@@ -30,4 +33,4 @@ exports.run = async (client, message, args) => {
 			await msg.react(emojis[i]);
 		}
 	}
-}
+};
