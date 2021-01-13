@@ -20,6 +20,27 @@ const client = new Discord.Client();
 //pegando o prefixo do bot para respostas de comandos
 const config = require("./config.json");
 
+//Comando que vai mandar uma mensagem quando uma pessoa nova entrar no canal
+client.on("guildMemberAdd", async (member) => { 
+	let guild = await client.guilds.cache.get("587153202969837590"); //Busca o id do servidor
+	let channel = await client.channels.cache.get("587157777009344532"); //Busca o id do canal
+	let emoji = await member.guild.emojis.cache.find(emoji => emoji.name === "nomedoemoji"); //Armazena um emoji presente no canal
+	//Se o servidor que a gente buscou com o guild for diferente que o servidor que o usuario entrou
+	//Isso evita que membros que entram em outros servidores que também usam esse bot, não notifique no seu servidor
+	if (guild != member.guild) return console.log('Você não é do servidor respectivo desse bot');
+
+	else {
+		//Se entrou no servidor correto
+		let embed = await new Discord.MessageEmbed().setColor("#7c2ae8").setAuthor(member.user.tag, member.user.displayAvatarURL())
+					.setTitle(`${emoji} Boas-vindas ${emoji}`).setImage("https://thumbs.gfycat.com/LastVariableGreathornedowl-small.gif")
+					.setDescription(`**${member.user}**, bem-vindo(a) ao servidor **${guild.name}**! Atualmente estamos com **${member.guild.memberCount} membros**, divirta-se conosco! :heart:`)
+					.setThumbnail(member.user.displayAvatarURL({ dynamic: true, format: "png", size: 1024 })) //coloca o avatar do usuario de maneira destacada como thumbnail
+					.setFooter('ID do usuário: ' + member.user.id).setTimestamp();
+
+		channel.send(embed);
+	}
+});
+
 //Um evento do tipo message que é ativado quando uma mensagem é enviada no chat
 client.on('message', async message => {
   //Ignora mensagens vindas de outros bots
