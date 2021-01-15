@@ -41,6 +41,44 @@ client.on("guildMemberAdd", async (member) => {
 	}
 });
 
+//O comando raw pega todas as informações do servidor, usuario, ações que acontece, TUDO. A cada nova ação do usuario ele manda um objeto contendo {t: , s: , op: , d:}, o t representa que tipo de ação ele fez e o d os detalhes dessa ação em forma de um objeto, id do usuario que fez, a mensagem ou o que for, id do canal, etc
+client.on('raw', async dados => {
+	//Filtrando as informações dentro do raw
+	if(dados.t !== "MESSAGE_REACTION_ADD" && dados.t !== "MESSAGE_REACTION_REMOVE") return;
+	if(dados.d.message_id != "799466312816132106") return;
+	
+	let servidor = client.guilds.cache.get('587153202969837590');
+	let membro = client.users.get(dados.d.user_id);
+	let vermelho = servidor.roles.cache.get('799071216429695016'),
+	    verde = servidor.roles.cache.get('799071404549079090'),
+	    amarelo = servidor.roles.cache.get('799073479261552680')
+	    azul = servidor.roles.cache.get('799071348122976306');
+  //Aqui vai estar verificando quando um usuario adicionar uma reação
+	if(dados.t === "MESSAGE_REACTION_ADD"){
+		if(dados.d.emoji.name === "❤️"){
+			if(membro.roles.has(vermelho)) return membro.addRole(vermelho);
+		} else if(dados.d.emoji.name === "💛"){
+			if(membro.roles.has(amarelo)) return membro.addRole(amarelo);
+		} else if(dados.d.emoji.name === "💚"){
+			if(membro.roles.has(verde)) return membro.addRole(verde);
+		} else if(dados.d.emoji.name === "💙"){
+			if(membro.roles.has(azul)) return membro.addRole(azul);
+		}
+	}
+  //Aqui vai estar verificando quando um usuario remover uma reação
+	if(dados.t === "MESSAGE_REACTION_REMOVE"){
+		if(dados.d.emoji.name === "❤️"){
+			if(membro.roles.has(vermelho)) return membro.removeRole(vermelho);
+		} else if(dados.d.emoji.name === "💛"){
+			if(membro.roles.has(amarelo)) return membro.removeRole(amarelo);
+		} else if(dados.d.emoji.name === "💚"){
+			if(membro.roles.has(verde)) return membro.removeRole(verde);
+		} else if(dados.d.emoji.name === "💙"){
+			if(membro.roles.has(azul)) return membro.removeRole(azul);
+		}
+	}
+});
+
 //Um evento do tipo message que é ativado quando uma mensagem é enviada no chat
 client.on('message', async message => {
   //Ignora mensagens vindas de outros bots
